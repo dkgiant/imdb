@@ -54,8 +54,8 @@ class SQLlitePipeline:
 
     def process_item(self, item, spider):
         self.c.execute('''
-                INSERT INTO best_movies (title, year, duration, genre, rating, movie_url) VALUES(?,?,?,?,?,?)
-                ''', (
+            INSERT INTO best_movies (title, year, duration, genre, rating, movie_url) VALUES(?,?,?,?,?,?)
+            ''', (
                 item.get('title'),
                 item.get('year'),
                 item.get('duration'),

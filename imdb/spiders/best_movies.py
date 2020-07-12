@@ -24,9 +24,12 @@ class BestMoviesSpider(CrawlSpider):
 
         return request
 
+    def remove_space(self, title):
+        return title.strip("\xa0")
+
     def parse_item(self, response):
         yield{
-            'title': response.xpath(r'//div[@class="title_wrapper"]/h1/text()').get(),
+            'title': self.remove_space(response.xpath(r'//div[@class="title_wrapper"]/h1/text()').get()),
             'year': response.xpath(r'//span[@id="titleYear"]/a/text()').get(),
             'duration': response.xpath(r'normalize-space(//time/text())').get(),
             'genre': response.xpath(r'//div[@class="subtext"]/a/text()').get(),

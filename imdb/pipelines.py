@@ -7,18 +7,20 @@
 # useful for handling different item types with a single interface
 # from itemadapter import ItemAdapter
 import logging
+import pymongo
 
 
-class ImdbPipeline:
-    @classmethod
-    def from_crawler(cls, crawler):
-        logging.warning(crawler.settings.get("MONGO_URI"))
+class MongodbPipeline:
+    collection_name = "best_movies"
 
     def open_spider(self, spider):
-        logging.warning('SPIDER OPEN FROM PIPEPLINE')
+        self.client = pymongo.MongoClient(
+            "mongodb+srv://dhgiang:Df7604129@cluster0.v2jiv.mongodb.net/<dbname>?retryWrites=true&w=majority")
+        self.db = self.client["IMDB"]
 
     def close_spider(self, spider):
-        logging.warning('SPIDER CLOSE FROM PIPEPLINE')
+        self.client.close()
 
     def process_item(self, item, spider):
+        self.db[self.collection_name].insert(item)
         return item
